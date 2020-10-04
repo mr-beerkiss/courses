@@ -7,7 +7,7 @@ Running KALI on parallels so needed to do a bit of work to get everything workin
 The ALFA AWUS036AC doesn't work out of the box despite being detected by `dmesg`. The drivers can 
 be [manually installed](https://github.com/aircrack-ng/rtl8812au). The `DKMS` option worked well.
 
-## iw/ip over iwconfig/ipconfig
+## `iw`/`ip` over `iwconfig`/`ipconfig`
 
 It seems like iw/ip are meant to replace their `*config` variants. Here are some useful commands for the
 newer commands.
@@ -19,11 +19,14 @@ sudo iw dev
 # Take interface down
 sudo ip link set wlan0 down
 
+# Rename the device (optional)
+sudo ip link wlan0 set name mon0
+
 # Set monitor mode
-sudo iw dev wlan0 set type monitor
+sudo iw dev mon0 set type monitor
 
 # Bring the interface back up
-sudo ip link set wlan0 up
+sudo ip link set mon0 up
 ```
 
 To kill problematic interference in monitor mode run `airmon-ng check kill`. Note that this will sometimes
