@@ -7,7 +7,7 @@ Running KALI on parallels so needed to do a bit of work to get everything workin
 The ALFA AWUS036AC doesn't work out of the box despite being detected by `dmesg`. The drivers can 
 be [manually installed](https://github.com/aircrack-ng/rtl8812au). The `DKMS` option worked well.
 
-## `iw`/`ip` over `iwconfig`/`ipconfig`
+### `iw`/`ip` over `iwconfig`/`ipconfig`
 
 It seems like iw/ip are meant to replace their `*config` variants. Here are some useful commands for the
 newer commands.
@@ -82,9 +82,26 @@ If the network is quite, you can use a `--fakeauth` attack with `aireplay-ng`. T
 associate with the AP without actually connecting it to the network. Think of it as that initially
 connection that requires you to enter a password to continue.
 
+Examples
+```sh
+# Fakeauth attack (associates to network)
+aireplay --fakeauth 0 -a <bssid> -h <iface_mac> mon0
+
+# ARP Replay attack (generates IVs which helps with key cracking
+aireplay --arpreplay -b <bssid> -h <iface_mac> mon0
+```
+
 Once you have connected with `--fakeauth`, you can use and `--arpreplay` attack with `aireplay-ng` to
 force the AP to generate a sufficient number of IVs that will allow you to crack the key with 
 `aircrack-ng`.
+
+> *NOTE* You don't actually need to kill `aireplay-ng` or `airodump-ng` before running `aircrack-ng`. In 
+fact it is probably better to leave them running in case you need to generate more data.
+
+> *NOTE* It seems that the fakeauth association and the aireplay are not enough on their own to force
+ARP packets to be generated in sufficient quantities. I worked around this by connecting a device to the AP.
+Not sure if there are workarounds
+
 
 ## WPA/WPA2 Cracking
 
